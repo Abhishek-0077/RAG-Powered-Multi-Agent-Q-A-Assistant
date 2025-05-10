@@ -5,7 +5,7 @@ By integrating structured product information, FAQs, specifications, policies, a
 ## Chatbot Interface
 Here’s how the chatbot interface looks:
 
-![Chatbot Interface](screenshots/chatbot_interface.png)
+![Chatbot Interface](Screenshot.png)
 
 ---
 
