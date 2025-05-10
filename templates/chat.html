@@ -12,7 +12,9 @@
         </header>
         <div class="chat-box">
             {% for role, message in chat_history|reverse %}
-                <div class="message {{ role }}">{{ message }}</div>
+                <div class="message {{ role }}">
+                    {{ message.replace('\n', '<br>')|safe }}
+                </div>
             {% endfor %}
         </div>
         <form method="POST" class="input-box">
