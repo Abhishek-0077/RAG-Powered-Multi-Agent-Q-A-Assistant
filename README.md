@@ -1,9 +1,63 @@
 # RAG-Powered Multi-Agent Q&A Assistant
 
-## Overview
-The **RAG-Powered Multi-Agent Q&A Assistant** is a chatbot application designed to intelligently route user queries to the appropriate processing pipeline. It leverages **sentence embeddings**, **ChromaDB** for vector storage and retrieval, and a **language model (LLM)** to generate precise answers. The workflow is structured to handle different types of queries, such as calculations, definitions, or general knowledge retrieval, and display all steps in a chatbot interface.
+## Workflow
+
+### 1. **User Input**
+- The user provides a query through the chatbot interface.
+
+### 2. **Sentence Embedding**
+- The query is embedded into a vector representation using the **`SentenceTransformer`** model (`all-MiniLM-L6-v2`).
+
+### 3. **Intent Classification**
+- The embedded query is compared against pre-stored intent vectors in the **`intent_classifier`** collection (stored in ChromaDB).
+- The nearest intent is determined using vector similarity.
+
+### 4. **Routing**
+The query is routed based on the classified intent:
+- **Calculator** → Perform calculations via an API or function.
+- **Dictionary** → Fetch definitions or explanations.
+- **RAG (Retrieval-Augmented Generation)** → Retrieve documents and generate an answer.
+
+### 5. **RAG Pipeline**
+If the query is routed to RAG:
+1. **Document Retrieval**:
+   - Query embedding → Compare with document embeddings in **`chunks_storage`** (ChromaDB).
+   - Retrieve the top 3 most relevant documents.
+2. **Answer Generation**:
+   - Retrieved documents → Passed as context to the **LLM**.
+   - LLM → Generates a precise answer based on the query and context.
+
+### 6. **Chatbot Interface**
+- All steps (classification, routing, and answer generation) are displayed in the chatbot interface for transparency and user understanding.
 
 ---
+
+## Visual Workflow with Arrows
+
+1. **User Input**  
+   → **Sentence Embedding**  
+   → **Intent Classification**  
+   → **Routing**:
+   - Calculator → Perform Calculation
+   - Dictionary → Fetch Definition
+   - RAG → **Document Retrieval**  
+     → **Answer Generation**  
+     → **Chatbot Interface**
+
+---
+
+## Example Query Flow
+
+### Query: "What is the definition of renewable energy?"
+1. **User Input** → "What is the definition of renewable energy?"
+2. **Sentence Embedding** → Query embedded using `SentenceTransformer`.
+3. **Intent Classification** → Classified as "dictionary."
+4. **Routing** → Fetch definition from the dictionary pipeline.
+5. **Output** → The chatbot displays the definition.
+
+---
+
+This arrow-based structure provides a clear and concise representation of the workflow. Let me know if you'd like further refinements!# RAG-Powered Multi-Agent Q&A Assistant
 
 ## Workflow
 
@@ -16,79 +70,50 @@ The **RAG-Powered Multi-Agent Q&A Assistant** is a chatbot application designed 
 ### 3. **Intent Classification**
 - The embedded query is compared against pre-stored intent vectors in the **`intent_classifier`** collection (stored in ChromaDB).
 - The nearest intent is determined using vector similarity.
-- Based on the intent, the query is routed to one of the following pipelines:
-  - **Calculator**: For mathematical calculations.
-  - **Dictionary**: For definitions or explanations.
-  - **RAG (Retrieval-Augmented Generation)**: For general knowledge or document-based queries.
 
-### 4. **Processing Pipelines**
-#### a. **Calculator**
-- If the intent is classified as "calculator," the query is routed to a dedicated API call or function to perform the calculation.
+### 4. **Routing**
+The query is routed based on the classified intent:
+- **Calculator** → Perform calculations via an API or function.
+- **Dictionary** → Fetch definitions or explanations.
+- **RAG (Retrieval-Augmented Generation)** → Retrieve documents and generate an answer.
 
-#### b. **Dictionary**
-- If the intent is classified as "dictionary," the query is routed to a dictionary API or function to fetch the definition or explanation.
+### 5. **RAG Pipeline**
+If the query is routed to RAG:
+1. **Document Retrieval**:
+   - Query embedding → Compare with document embeddings in **`chunks_storage`** (ChromaDB).
+   - Retrieve the top 3 most relevant documents.
+2. **Answer Generation**:
+   - Retrieved documents → Passed as context to the **LLM**.
+   - LLM → Generates a precise answer based on the query and context.
 
-#### c. **RAG (Retrieval-Augmented Generation)**
-- If the intent is classified as "RAG," the following steps are performed:
-  1. **Document Retrieval**:
-     - The query embedding is compared against pre-stored document embeddings in the **`chunks_storage`** collection (stored in ChromaDB).
-     - The top 3 most relevant documents are retrieved.
-  2. **Answer Generation**:
-     - The retrieved documents are passed as context to a **language model (LLM)**.
-     - The LLM generates a precise answer based on the query and the retrieved context.
-
-### 5. **Chatbot Interface**
-- All steps, including the classification, routing, and final answer generation, are displayed in the chatbot interface for transparency and user understanding.
+### 6. **Chatbot Interface**
+- All steps (classification, routing, and answer generation) are displayed in the chatbot interface for transparency and user understanding.
 
 ---
 
-## Project Structure
+## Visual Workflow with Arrows
 
-### Key Components
-1. **`app.py`**:
-   - The main Flask application that handles user input, routing, and rendering the chatbot interface.
-
-2. **`model_For_Rag.py`**:
-   - Contains functions for embedding queries, retrieving top documents, and classifying intents using ChromaDB.
-
-3. **ChromaDB Collections**:
-   - **`chunks_storage`**: Stores document embeddings for retrieval in the RAG pipeline.
-   - **`intent_classifier`**: Stores intent embeddings for query classification.
-
-4. **Language Model**:
-   - A pre-trained LLM is used for generating answers in the RAG pipeline.
+1. **User Input**  
+   → **Sentence Embedding**  
+   → **Intent Classification**  
+   → **Routing**:
+   - Calculator → Perform Calculation
+   - Dictionary → Fetch Definition
+   - RAG → **Document Retrieval**  
+     → **Answer Generation**  
+     → **Chatbot Interface**
 
 ---
 
-## How It Works
+## Example Query Flow
 
-1. **Input**: The user enters a query in the chatbot.
-2. **Embedding**: The query is embedded using `SentenceTransformer`.
-3. **Intent Classification**: The query is classified into one of three categories:
-   - Calculator
-   - Dictionary
-   - RAG
-4. **Routing**:
-   - **Calculator**: Calls a calculation function or API.
-   - **Dictionary**: Fetches a definition or explanation.
-   - **RAG**: Retrieves top documents and generates an answer using the LLM.
-5. **Output**: The chatbot displays the result along with the steps taken to process the query.
+### Query: "What is the definition of renewable energy?"
+1. **User Input** → "What is the definition of renewable energy?"
+2. **Sentence Embedding** → Query embedded using `SentenceTransformer`.
+3. **Intent Classification** → Classified as "dictionary."
+4. **Routing** → Fetch definition from the dictionary pipeline.
+5. **Output** → The chatbot displays the definition.
 
 ---
 
-## Installation
-
-### Prerequisites
-- Python 3.8 or higher
-- Required Python libraries:
-  - `flask`
-  - `chromadb`
-  - `sentence-transformers`
-  - `transformers`
-  - `torch`
-
-### Steps
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-repo/RAG-Powered-Multi-Agent-Q-A-Assistant.git
-   cd RAG-Powered-Multi-Agent-Q-A-Assistant
+This arrow-based structure provides a clear and concise representation of the workflow. Let me know if you'd like further refinements!
