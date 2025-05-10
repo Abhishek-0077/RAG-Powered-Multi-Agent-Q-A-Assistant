@@ -4,7 +4,7 @@ from chromadb import PersistentClient
 from sentence_transformers import SentenceTransformer
 
 
-chroma_client1 = chromadb.PersistentClient(path="/workspaces/RAG-Powered-Multi-Agent-Q-A-Assistant/Chunks_storage/Chunks_storage/Chunks_storage")
+chroma_client1 = chromadb.PersistentClient(path="/workspaces/RAG-Powered-Multi-Agent-Q-A-Assistant/Chunks_storage/Chunks_storage")
 collection1 = chroma_client1.get_or_create_collection(name = "chunks_storage_from")
 
 chroma_client2 = chromadb.PersistentClient(path="/workspaces/RAG-Powered-Multi-Agent-Q-A-Assistant/intent_classifier/intent_classifier")
@@ -36,5 +36,3 @@ def classify_query_with_chroma(query, top_k=3):
     intent = Counter(intents).most_common(1)[0][0]
     return intent
 
-
-print(classify_query_with_chroma("calculate 2+5"))
