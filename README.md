@@ -1,4 +1,13 @@
 # RAG-Powered Multi-Agent Q&A Assistant
+This project implements a **Retrieval-Augmented Generation (RAG)** based search system designed to provide accurate, conversational answers to customer queries about the **EcoCharge 2000—a portable solar battery by EcoTech Gear.(Just taken For example)** 
+By integrating structured product information, FAQs, specifications, policies, and usage guidance into a retrievable knowledge base, the system enables users to ask natural language questions and receive contextually relevant answers. Whether a customer wants to know about charging methods, warranty details, or the product's durability in outdoor conditions, the RAG pipeline ensures efficient and reliable access to trusted information, enhancing user experience and support automation.
+
+## Chatbot Interface
+Here’s how the chatbot interface looks:
+
+![Chatbot Interface](screenshots/chatbot_interface.png)
+
+---
 
 ## Workflow
 
